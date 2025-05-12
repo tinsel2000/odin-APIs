@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <img src="#">
-  <script>
-    const img = document.querySelector('img');
-    fetch('https://api.giphy.com/v1/gifs/translate?api_key=wxkRA2utwsP90iPVxhAFkOq6olZ0isVF&s=cats', {
-    mode: 'cors'
-    })
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(response) {
-        img.src = response.data.images.original.url;
-        });
-  </script>    
+    <div id="weatherdisplay">
+        Daily Summary:
+        <div id="location" class="weatherinfo"></div>
+        <div id="date" class="weatherinfo"></div>
+        <div id="conditions" class="weatherinfo"></div>
+        <div id="temp" class="weatherinfo"></div>
+        <div id="windspeed" class="weatherinfo"></div>
+        <div id="winddir" class="weatherinfo"></div>
+        <div id="precip" class="weatherinfo"></div>
+        <div id="precipprob" class="weatherinfo"></div>
+        <div id="humidity" class="weatherinfo"></div>
+        <div id="sunrise" class="weatherinfo"></div>
+        <div id="sunset" class="weatherinfo"></div>
+    </div>
+    <form id="weathersearch">
+        <label for="location"><b>Search Location</b></label>
+        <input name="location" type="text">
+        <button type="submit">Search</button>
+    </form>
 </body>
 </html>

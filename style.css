@@ -1,0 +1,9 @@
+body > * {
+    padding: 10px;
+    margin: 10px;
+}
+
+#weatherdisplay > * {
+    padding: 10px;
+    margin: 10px;
+}
