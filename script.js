@@ -17,12 +17,13 @@ const d = new Date();
 
 function temperatureFToC(valNum) {
   valNum = parseFloat(valNum);
-  return Math.round(((valNum-32) / 1.8)  * 10) / 10
+  //console.log("Converting: " + valNum + "to: " + Math.round(((valNum-32) * 5 / 9)  * 10) / 10);
+  return Math.round(((valNum-32) * 5 / 9)  * 10) / 10
 }
 
 async function getWeather(location) {
     console.log(`Getting weather, location is: ${location}`);
-    const display = document.querySelector('#weathertext');
+    //const display = document.querySelector('#weathertext');
     const apiKey = '?key=9S6PHD9WTMVUYEKHT5KNYKJMR'
     if (!location) {
         console.log(`No location detected, setting default`);
@@ -56,8 +57,8 @@ dayPropsUsed = {
     datetime: "",
     conditions: "",
     feelslike: "",
-    feelslikemin: "",
     feelslikemax: "",
+    feelslikemin: "",
     precip: "",
     precipprob: "",
     windspeed: "",
@@ -69,6 +70,7 @@ dayPropsUsed = {
 }
 hourPropsWeather = {}
 hourPropsUsed = {
+    datetime: "",
     conditions: "",
     feelslike: "",
     precip: "",
@@ -82,9 +84,9 @@ function setWeather(obj) {
     allPropsWeather = obj;
     let keys = Object.keys(obj.currentConditions);
     let values = Object.values(obj.currentConditions);
-    let keysAll = Object.keys(obj);
-    let valuesAll = Object.values(obj);
-    let weatherDisplay = document.querySelector('.weather-display-daily')
+    //let keysAll = Object.keys(obj);
+    //let valuesAll = Object.values(obj);
+    //let weatherDisplay = document.querySelector('.weather-display-daily')
     currentWeather.location = obj.resolvedAddress
     currentWeather.date = obj.days[0].datetime
     for (let i = 0; i < keys.length; i++) {
@@ -105,25 +107,29 @@ function setWeather(obj) {
     daysPropsWeather = obj.days
     hourPropsWeather = obj.days[0].hours
     dayPropsWeather = obj.days[0]
-    console.log(daysPropsWeather);
-    console.log(daysPropsWeather.length);
-    console.log(obj.days[0]);
-    console.log(dayPropsWeather);
-    console.log(dayPropsWeather.length);
+    //console.log(daysPropsWeather);
+    //console.log(daysPropsWeather.length);
+    //console.log(obj.days[0]);
+    //console.log(dayPropsWeather);
+    //console.log(dayPropsWeather.length);
 };
 
 function DisplayWeather(obj1, obj2, element1) {
 
     //console.log("getting class" + element1.classList[0]);
     let currentTime = 0;
+    //let i = 0;
+    let timeUnits = 0
     if (element1.classList[0] == "weather-display-daily") {
         currentTime = d.getDay()
+        timeUnits = 14;
     } else {
         currentTime = d.getHours();
+        timeUnits = 24 - currentTime
     }
     //console.log(currentTime)
     const allPropsWeatherKeys = Object.keys(obj2)
-    for (let i = 0; i < obj1.length; i++) {
+    for (let i = 0; i < timeUnits; i++) {
         //Create individual day
         let currentDisplay = document.createElement("div");
         let propTime = i
@@ -138,33 +144,43 @@ function DisplayWeather(obj1, obj2, element1) {
         currentDisplay.classList.add(element1.classList[0] + "-info-" + propTime)
         currentDisplay.classList.add("button-73")
         let currentDisplayTime = document.createElement("div");
-        
+        let propHour = 0;
+
         if (element1.classList[0] == "weather-display-daily") {
-        currentDisplayTime.textContent = weekdays[currentTime]
+            console.log("working on weather-display-daily");
+            currentDisplayTime.textContent = weekdays[currentTime]
+            let dayOfWeekText = document.createElement("div");
+            dayOfWeekText.textContent = dayOfWeek
+            currentDisplay.insertBefore(dayOfWeekText, currentDisplay.firstChild)
         } else {
-        currentDisplayTime.textContent = currentTime + i + ":00";
+            currentDisplayTime.textContent = currentTime + i + ":00";
+            propHour = currentTime + i;
         }
         
         for (let j = 0; j < allPropsWeatherKeys.length; j++) {
             //Create properties on each day
             let currentProp = allPropsWeatherKeys[j]
-            //console.log("adding: " + currentProp);
             let currentDisplayProp = document.createElement("div");
-            currentDisplayProp.textContent = obj1[i][currentProp];
             currentDisplayProp.classList.add(currentProp)
+
+            if (element1.classList[0] == "weather-display-daily") {
+                currentDisplayProp.textContent = obj1[i][currentProp];
+            } else {
+                currentDisplayProp.textContent = obj1[propHour][currentProp];
+            }
             currentDisplay.appendChild(currentDisplayProp);
         }
+        /*
         if (element1.classList[0] == "weather-display-daily") {
-            let dayOfWeekText = document.createElement("div");
-            dayOfWeekText.textContent = dayOfWeek
-            currentDisplay.insertBefore(dayOfWeekText, currentDisplay.firstChild)
         } else {
-            currentDisplay.insertBefore(currentDisplayTime, currentDisplay.firstChild)
+            //console.log("currentDisplayTime: " + currentDisplayTime.textContent);
+            //currentDisplay.insertBefore(currentDisplayTime, currentDisplay.firstChild)
         }
-        
+        */
+
         element1.appendChild(currentDisplay)
         attachDragger(element1)
-    }    
+    }
 }
 
 function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
@@ -179,12 +195,39 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
         currentInfoProp.classList.add(currentWeatherProp)
         currentDisplay.appendChild(currentInfoProp)
     }
+    let dateElements = currentDisplay.querySelectorAll(".datetime");
+    dateElements.forEach(dateElements => {
+        dateElements.classList.replace("datetime", "date");
+    });
+
     rotateCompass(obj1[0].winddir)
     let dayOfWeek = weekdays[d.getDay()]
     let dayOfWeekText = document.createElement("div");
     dayOfWeekText.textContent = dayOfWeek
     currentDisplay.insertBefore(dayOfWeekText, currentDisplay.firstChild)
     element1.appendChild(currentDisplay)
+
+    let dayConditions = obj1[0].conditions;
+    dayConditions = "Rainy"
+    dayConditions = dayConditions.replace(/\s+/g, '-').toLowerCase();
+    dayConditions = dayConditions.replace("partially", 'partly');
+    dayConditions = dayConditions.replace("overcast", 'cloudy');
+    console.log("dayConditions: " + dayConditions);
+
+    let dayConditionsIcons = document.querySelectorAll(".day-icons");
+    let found = false;
+    dayConditionsIcons.forEach(dayConditionsIcon => {
+         const classList = dayConditionsIcon.classList;
+         console.log("classList: " + classList);
+         classList.forEach(className => {
+            if (className.includes(dayConditions) && !found) {
+                console.log(found);
+                found = true;
+                dayConditionsIcon.style.display = "inline-block";
+                console.log(className);
+            }
+         });
+    });
 }
 
 function rotateCompass(winddir) {
@@ -260,6 +303,7 @@ function AppendUnits() {
     let temps = document.querySelectorAll(".feelslike, .feelslikemin, .feelslikemax");
     let percents = document.querySelectorAll(".precipprob, .humidity");
     let millimetres = document.querySelectorAll(".precip");
+    let time = document.querySelectorAll(".datetime, .sunrise, .sunset");
 
     mph.forEach(mph => {
         mph.textContent += " mph"
@@ -273,6 +317,10 @@ function AppendUnits() {
     });
     millimetres.forEach(millimetres => {
         millimetres.textContent += " mm"
+    });
+    time.forEach(time => {
+        time.textContent = time.textContent.substring(0, 5);
+        //console.log(time.textContent.substring(0, 5))
     });
 }
 

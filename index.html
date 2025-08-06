@@ -5,58 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
     <script src="script.js" defer></script>
 </head>
 <body>
     <div id="weather-display-day-header">
         Todays Summary:
     </div>
-    <div class="weather-display-day">
-        <div class="weather-display-day-labels button-73">
-            <div id="hourly-hour">Day:</div>
-            <div id="hourly-hour">Date:</div>
-            <div id="hourly-conditions">Conditions:</div>
-            <div id="hourly-temp">Temperature:</div>
-            <div id="hourly-temp">Temp Lows:</div>
-            <div id="hourly-temp">Temp Highs:</div>
-            <div id="hourly-precip-mm">Rain (mm):</div>
-            <div id="hourly-precip-percent">Rain Chance:</div>
-            <div id="hourly-windspeed">Wind Speed:</div>
-            <div id="hourly-temp">Wind Direction:</div>
-
-            <div id="hourly-humid">Humidity:</div>
-            <div id="hourly-temp">Sunrise:</div>
-            <div id="hourly-temp">Sunset:</div>
-            <div id="hourly-temp">UV Index:</div>
-
-        </div>
-    </div>
-        <div class="weather-display-day-winddir">Wind Direction today:
-            <div class="compass-component-wrapper">
-                <div class="compass-container">
-                    <div class="compass-markings">
-                        <div class="north">N</div>
-                        <div class="east">E</div>
-                        <div class="south">S</div>
-                        <div class="west">W</div>
-                    </div>
-                    <div class="compass-needle"></div>
-                    <div class="compass-center-dot"></div>
+    <div class="weather-display-day-container">
+        <div class="weather-display-day">
+            <div class="weather-display-day-labels button-73">
+                <div id="hourly-hour">Day:</div>
+                <div id="hourly-hour">Date:</div>
+                <div id="hourly-conditions">Conditions:</div>
+                <div id="hourly-temp">
+                    Temperature
+                    <span class="mdi mdi-thermometer"></span>
+                    :
                 </div>
+                <div id="hourly-temp">Temp Highs:</div>
+                <div id="hourly-temp">Temp Lows:</div>
+                <div id="hourly-precip-mm">
+                    Rain (mm)
+                    <span class="mdi mdi-water-outline"></span>
+                    :
+                </div>
+                <div id="hourly-precip-percent">Rain Chance:</div>
+                <div id="hourly-windspeed">
+                    Wind Speed
+                    <span class="mdi mdi-weather-windy"></span>
+                    :
+                </div>
+                <div id="hourly-temp">Wind Direction:</div>
+                <div id="hourly-humid">Humidity:</div>
+                <div id="hourly-temp">
+                    Sunrise
+                    <span class="mdi mdi-weather-sunset-up"></span>
+                    :
+                </div>
+                <div id="hourly-temp">
+                    Sunset
+                    <span class="mdi mdi-weather-sunset-down"></span>
+                    :
+                </div>
+                <div id="hourly-temp">UV Index:</div>
             </div>
         </div>
-    <div id="weatherdisplayheader">
-        Weekly Forecast:
-    </div>
-    <div class="weather-display-daily">
-        <div class="weather-display-daily-labels button-73">
-            <div id="hourly-hour">Day:</div>
-            <div id="hourly-conditions">Conditions:</div>
-            <div id="hourly-temp">Temperature:</div>
-            <div id="hourly-precip-mm">Rain (mm):</div>
-            <div id="hourly-precip-percent">Rain Chance:</div>
+        <div class="icon-area">
+            <div class="weather-display-day-icons">
+                <span class="day-icons mdi mdi-weather-cloudy"></span>
+                <span class="day-icons mdi mdi-weather-partly-cloudy"></span>
+                <span class="day-icons mdi mdi-weather-pouring"></span>
+                <span class="day-icons mdi mdi-weather-rainy"></span>
+                <span class="day-icons mdi mdi-weather-partly-rainy"></span>
+                <span class="day-icons mdi mdi-weather-sunny"></span>
+                <span class="day-icons mdi mdi-weather-windy"></span>
+            </div>
+            <div class="weather-display-day-winddir">Wind Direction today:
+                <div class="compass-component-wrapper">
+                    <div class="compass-container">
+                        <div class="compass-markings">
+                            <div class="north">N</div>
+                            <div class="east">E</div>
+                            <div class="south">S</div>
+                            <div class="west">W</div>
+                        </div>
+                        <div class="compass-needle"></div>
+                        <div class="compass-center-dot"></div>
+                    </div>
+                </div>
+            </div>
+                </div>
         </div>
-    </div>
     <div id="weather-display-hourly-header">
         Hourly Report:
     </div>
@@ -64,11 +84,43 @@
         <div class="weather-display-hourly-labels button-73">
             <div id="hourly-hour">Hour:</div>
             <div id="hourly-conditions">Conditions:</div>
-            <div id="hourly-temp">Temperature:</div>
-            <div id="hourly-precip-mm">Rain (mm):</div>
+            <div id="hourly-temp">
+                Temperature
+                <span class="mdi mdi-thermometer"></span>
+                :
+            </div>
+            <div id="hourly-precip-mm">
+                Rain (mm)
+                <span class="mdi mdi-water-outline"></span>
+                :
+            </div>
             <div id="hourly-precip-percent">Rain Chance:</div>
-            <div id="hourly-windspeed">Wind Speed:</div>
+            <div id="hourly-windspeed">
+                Wind Speed
+                <span class="mdi mdi-weather-windy"></span>
+                :
+            </div>
             <div id="hourly-humid">Humidity:</div>
+        </div>
+    </div>
+    <div id="weatherdisplayheader">
+        Weekly Forecast:
+    </div>
+    <div class="weather-display-daily">
+        <div class="weather-display-daily-labels button-73">
+            <div id="hourly-hour">Day:</div>
+            <div id="hourly-conditions">Conditions:</div>
+            <div id="hourly-temp">
+                Temperature
+                <span class="mdi mdi-thermometer"></span>
+                :
+            </div>
+            <div id="hourly-precip-mm">
+                Rain (mm)
+                <span class="mdi mdi-water-outline"></span>
+                :
+            </div>
+            <div id="hourly-precip-percent">Rain Chance:</div>
         </div>
     </div>
     <form id="weathersearch">
