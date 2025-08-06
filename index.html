@@ -8,46 +8,67 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div id="weatherdisplayheader">
-        Day Summary:
+    <div id="weather-display-day-header">
+        Todays Summary:
     </div>
-    <div id="weatherdisplay" class="weather-display-daily">
-        <div class="weather-locdate">
-            <div id="location" class="weather-info"></div>
-            <div id="date" class="weather-info"></div>
+    <div class="weather-display-day">
+        <div class="weather-display-day-labels button-73">
+            <div id="hourly-hour">Day:</div>
+            <div id="hourly-hour">Date:</div>
+            <div id="hourly-conditions">Conditions:</div>
+            <div id="hourly-temp">Temperature:</div>
+            <div id="hourly-temp">Temp Lows:</div>
+            <div id="hourly-temp">Temp Highs:</div>
+            <div id="hourly-precip-mm">Rain (mm):</div>
+            <div id="hourly-precip-percent">Rain Chance:</div>
+            <div id="hourly-windspeed">Wind Speed:</div>
+            <div id="hourly-temp">Wind Direction:</div>
+
+            <div id="hourly-humid">Humidity:</div>
+            <div id="hourly-temp">Sunrise:</div>
+            <div id="hourly-temp">Sunset:</div>
+            <div id="hourly-temp">UV Index:</div>
+
         </div>
-        <div id="conditions" class="weather-info"></div>
-        <div class="weather-precipitation">
-            <div id="precip" class="weather-info"></div>
-            <div id="precipprob" class="weather-info"></div>
+    </div>
+        <div class="weather-display-day-winddir">Wind Direction today:
+            <div class="compass-component-wrapper">
+                <div class="compass-container">
+                    <div class="compass-markings">
+                        <div class="north">N</div>
+                        <div class="east">E</div>
+                        <div class="south">S</div>
+                        <div class="west">W</div>
+                    </div>
+                    <div class="compass-needle"></div>
+                    <div class="compass-center-dot"></div>
+                </div>
+            </div>
         </div>
-        <div class="weather-temphumid">
-            <div id="temp" class="weather-info"></div>
-            <div id="humidity" class="weather-info"></div>
+    <div id="weatherdisplayheader">
+        Weekly Forecast:
+    </div>
+    <div class="weather-display-daily">
+        <div class="weather-display-daily-labels button-73">
+            <div id="hourly-hour">Day:</div>
+            <div id="hourly-conditions">Conditions:</div>
+            <div id="hourly-temp">Temperature:</div>
+            <div id="hourly-precip-mm">Rain (mm):</div>
+            <div id="hourly-precip-percent">Rain Chance:</div>
         </div>
-        <div class="weather-wind">
-            <div id="windspeed" class="weather-info"></div>
-            <div id="winddir" class="weather-info"></div>
-        </div>
-        <div class="weather-suntime">
-            <div id="sunrise" class="weather-info"></div>
-            <div id="sunset" class="weather-info"></div>
-        </div>
-        
-        
     </div>
     <div id="weather-display-hourly-header">
         Hourly Report:
     </div>
     <div class="weather-display-hourly">
-        <div class="hour-0 button-73">
-            <div id="hourly-hour">Hour</div>
-            <div id="hourly-conditions">Conditions</div>
+        <div class="weather-display-hourly-labels button-73">
+            <div id="hourly-hour">Hour:</div>
+            <div id="hourly-conditions">Conditions:</div>
             <div id="hourly-temp">Temperature:</div>
-            <div id="hourly-precip-mm">Precipitation (mm)</div>
-            <div id="hourly-precip-percent">Precipitation (%)</div>
-            <div id="hourly-windspeed">Wind Speed (mph)</div>
-            <div id="hourly-humid">Humidity (%)</div>
+            <div id="hourly-precip-mm">Rain (mm):</div>
+            <div id="hourly-precip-percent">Rain Chance:</div>
+            <div id="hourly-windspeed">Wind Speed:</div>
+            <div id="hourly-humid">Humidity:</div>
         </div>
     </div>
     <form id="weathersearch">

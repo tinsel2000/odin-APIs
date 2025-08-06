@@ -1,9 +1,9 @@
-
+/*
 .weather-display-daily {
     display: grid;
     grid-template-columns: 45% 45%;
 }
-
+*/
 .weather-info {
   align-items: center;
   appearance: none;
@@ -28,17 +28,49 @@
   will-change: box-shadow,transform;
 }
 
-.weather-display-hourly {
+.weather-display-hourly,
+.weather-display-daily,
+.weather-display-day {
     display: flex;
     flex-direction: row;
+    margin: 10px;
 }
 
-.weather-display-hourly > * > * {
-    min-height: 3rem;
-    max-width: fit-content;
-    padding: 4px;
-    text-align: center;
+.weather-display-hourly,
+.weather-display-daily {
+    overflow-x: auto;
+    scrollbar-width: none;
 }
+
+.weather-display-day > * {
+  padding: 10px;
+}
+
+
+
+
+.weather-display-hourly-labels,
+.weather-display-daily-labels,
+.weather-display-day-labels {
+    text-align: right;
+}
+
+
+#hourly-conditions {
+  min-height: 2em;
+}
+
+div[class*="info"] > *,
+div[class*="labels"] > * {
+  white-space: nowrap;
+  padding-bottom: 5px;
+}
+
+div[class*="info"] > .conditions {
+  min-height: 2em;
+}
+
+
 /*
 <!-- HTML !-->
 <button class="button-73" role="button">Button 73</button>
@@ -60,9 +92,8 @@
   letter-spacing: -.24px;
   margin: 0;
   outline: none;
-  padding: 1rem 1.3rem;
+  padding: 1rem 1rem;
   quotes: auto;
-  text-align: center;
   text-decoration: none;
   transition: all .15s;
   user-select: none;
@@ -73,7 +104,7 @@
 .button-73:hover {
   background-color: #FFC229;
   box-shadow: #FF6314 0 -6px 8px inset;
-  transform: scale(1.125);
+  transform: scale(1.01);
 }
 
 .button-73:active {
@@ -82,7 +113,100 @@
 
 @media (min-width: 768px) {
   .button-73 {
-    font-size: 1.5rem;
-    padding: .75rem 2rem;
+    font-size: 1rem;
+    padding: .75rem 1rem;
   }
 }
+
+.compass-component-wrapper {
+    /* This wrapper allows you to easily size and position the entire compass */
+    width: 250px;
+    height: 250px;
+    margin: 10px auto;
+}
+
+.compass-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0e7ee, #cdd5dd);
+    box-shadow:
+        inset 0 0 10px rgba(0,0,0,0.1),
+        0 10px 20px rgba(0,0,0,0.2),
+        0 0 0 5px #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.compass-center-dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #333;
+    z-index: 2;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+}
+
+.compass-needle {
+    position: absolute;
+    width: 10px;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center center; 
+    z-index: 1;
+    transition: transform 0.3s ease-in-out;
+}
+
+.compass-needle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-color: #ef4444;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.compass-needle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-color: #cbd5e1;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.compass-markings div {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    transform: translate(-50%, -50%);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+.compass-markings .north { top: 15%; left: 50%; }
+.compass-markings .south { bottom: 15%; left: 50%; }
+.compass-markings .east { top: 50%; right: 15%; transform: translate(50%, -50%); }
+.compass-markings .west { top: 50%; left: 15%; }
+
+/* Keyframe animation for rotation */
+@keyframes rotateNeedle {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.compass-needle:hover {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
