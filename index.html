@@ -16,13 +16,13 @@
         <button type="submit">Search</button>
     </form>
     <div id="weather-display-day-header">
-        Todays Summary:
+        Todays Summary
     </div>
     <div class="weather-display-day-container">
         <div class="weather-display-day">
             <div class="weather-display-day-labels button-73">
-                <div id="hourly-hour">Day:</div>
                 <div id="hourly-hour">Date:</div>
+                <div id="hourly-hour">Location:</div>
                 <div id="hourly-conditions">Conditions:</div>
                 <div id="hourly-temp">
                     Temperature
@@ -57,12 +57,6 @@
                 <div id="hourly-temp">UV Index:</div>
             </div>
         </div>
-        <div class="weather-display-day-chart-container">
-            <button class="chart-button-feelslike" onclick="loadWeatherDayChart(event)">Temp</button>
-            <button class="chart-button-precip" onclick="loadWeatherDayChart(event)">Rain</button>
-            <button class="chart-button-humidity" onclick="loadWeatherDayChart(event)">Humidity</button>
-            <canvas id="weather-display-day-chart" style="width:100%;max-width:700px"></canvas>
-        </div>
         <div class="icon-area">
             <div class="weather-display-day-icons">Conditions: 
                 <div class="weather-display-day-icon">
@@ -89,10 +83,16 @@
                     </div>
                 </div>
             </div>
-                </div>
         </div>
+        <div class="weather-display-day-chart-container">
+            <button class="chart-button-feelslike" onclick="loadWeatherDayChart(event)">Temp</button>
+            <button class="chart-button-precip" onclick="loadWeatherDayChart(event)">Rain</button>
+            <button class="chart-button-humidity" onclick="loadWeatherDayChart(event)">Humidity</button>
+            <canvas id="weather-display-day-chart" style="width:100%;max-width:700px"></canvas>
+        </div>
+    </div>
     <div id="weather-display-hourly-header">
-        Hourly Report:
+        Hourly Forecast
     </div>
     <div class="weather-display-hourly">
         <div class="weather-display-hourly-labels button-73">
@@ -118,7 +118,7 @@
         </div>
     </div>
     <div id="weatherdisplayheader">
-        Weekly Forecast:
+        Weekly Forecast
     </div>
     <div class="weather-display-daily">
         <div class="weather-display-daily-labels button-73">

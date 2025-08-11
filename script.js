@@ -26,7 +26,7 @@ async function getWeather(location) {
     //const display = document.querySelector('#weathertext');
     const apiKey = '?key=9S6PHD9WTMVUYEKHT5KNYKJMR'
     if (!location) {
-        console.log(`No location detected, setting default`);
+        console.log(`No location detected, setting default as Carlisle`);
         location = 'Carlisle'
     };
     const reqUrl = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/' + location + apiKey
@@ -36,11 +36,12 @@ async function getWeather(location) {
     )
     const returnedData = await response.json();
     console.log(returnedData);
-    setWeather(returnedData);
+    setWeather(returnedData, 0);
     loadWeather()
 }
 
 currentWeather = {};
+allWeather = {};
 daysPropsWeather = {}
 daysPropsUsed = {
     conditions: "",
@@ -52,6 +53,7 @@ daysPropsUsed = {
 dayPropsWeather = {}
 dayPropsUsed = {
     datetime: "",
+    location: "",
     conditions: "",
     feelslike: "",
     feelslikemax: "",
@@ -76,52 +78,36 @@ hourPropsUsed = {
     humidity: "",
 }
 
-function setWeather(obj) {
-    currentWeather = {};
+function setWeather(obj, day) {
+    //currentWeather = {};
     allPropsWeather = obj;
     let keys = Object.keys(obj.currentConditions);
-    let values = Object.values(obj.currentConditions);
-    //let keysAll = Object.keys(obj);
-    //let valuesAll = Object.values(obj);
-    //let weatherDisplay = document.querySelector('.weather-display-daily')
-    currentWeather.location = obj.resolvedAddress
-    currentWeather.date = obj.days[0].datetime
-    for (let i = 0; i < keys.length; i++) {
-        if (values[i] === null) {continue}
-        //console.log(keys[i], values[i]);
-        currentWeather[keys[i]] = values[i];
-        /*
-        let newDiv = document.createElement("div")
-        newDiv.setAttribute("id", keys[i]);
-        newDiv.setAttribute("class", "weatherinfo");
-        newDiv.textContent = `${keys[i]} ${values[i]}`
-        weatherDisplay.appendChild(newDiv);
-        */
-    }
-    console.log(currentWeather);
+
+    allWeather = obj;
     console.log("all weather" + obj);
-    console.log(allPropsWeather.days[0].hours)
+    console.log(obj);
+    console.log(day);
+    console.log(obj.days[day]);
+    console.log(allPropsWeather.days[day])
     daysPropsWeather = obj.days
-    hourPropsWeather = obj.days[0].hours
-    dayPropsWeather = obj.days[0]
-    //console.log(daysPropsWeather);
-    //console.log(daysPropsWeather.length);
-    //console.log(obj.days[0]);
-    //console.log(dayPropsWeather);
-    //console.log(dayPropsWeather.length);
+    hourPropsWeather = obj.days[day].hours
+    dayPropsWeather = obj.days[day]
+    dayPropsWeather.location = setPrettyText(obj.address);
 };
 
-function DisplayWeather(obj1, obj2, element1) {
+function DisplayWeather(obj1, obj2, element1, daysAdditional) {
 
-    //console.log("getting class" + element1.classList[0]);
     let currentTime = 0;
-    //let i = 0;
     let timeUnits = 0
     if (element1.classList[0] == "weather-display-daily") {
         currentTime = d.getDay()
         timeUnits = 14;
     } else {
-        currentTime = d.getHours();
+        if (daysAdditional && daysAdditional > 0) {
+
+        } else {
+            currentTime = d.getHours();
+        }
         timeUnits = 24 - currentTime
     }
     //console.log(currentTime)
@@ -130,7 +116,7 @@ function DisplayWeather(obj1, obj2, element1) {
         //Create individual time unit
         let currentDisplay = document.createElement("div");
         let propTime = i
-        //For daily consideration
+        //For weekly consideration
         dayOfWeekNum = currentTime + i
         if (dayOfWeekNum > 6 && dayOfWeekNum < 14 ) {
             dayOfWeekNum -= 7
@@ -150,6 +136,8 @@ function DisplayWeather(obj1, obj2, element1) {
             let dayOfWeekText = document.createElement("div");
             dayOfWeekText.textContent = dayOfWeek
             currentDisplay.insertBefore(dayOfWeekText, currentDisplay.firstChild)
+
+            currentDisplay.addEventListener("click", handleDayClicked)
         } else {
             currentDisplayTime.textContent = currentTime + i + ":00";
             propHour = currentTime + i;
@@ -160,6 +148,7 @@ function DisplayWeather(obj1, obj2, element1) {
             let currentProp = allPropsWeatherKeys[j]
             let currentDisplayProp = document.createElement("div");
             currentDisplayProp.classList.add(currentProp)
+            currentDisplayProp.style.pointerEvents = "none";
 
             if (element1.classList[0] == "weather-display-daily") {
                 currentDisplayProp.textContent = obj1[i][currentProp];
@@ -168,13 +157,6 @@ function DisplayWeather(obj1, obj2, element1) {
             }
             currentDisplay.appendChild(currentDisplayProp);
         }
-        /*
-        if (element1.classList[0] == "weather-display-daily") {
-        } else {
-            //console.log("currentDisplayTime: " + currentDisplayTime.textContent);
-            //currentDisplay.insertBefore(currentDisplayTime, currentDisplay.firstChild)
-        }
-        */
 
         element1.appendChild(currentDisplay)
         attachDragger(element1)
@@ -189,7 +171,8 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
     for (let i = 0; i < obj2Keys.length; i++) {
         let currentWeatherProp = obj2Keys[i]
         let currentInfoProp = document.createElement("div");
-        currentInfoProp.textContent = obj1[0][currentWeatherProp]
+        console
+        currentInfoProp.textContent = obj1[currentWeatherProp]
         currentInfoProp.classList.add(currentWeatherProp)
         currentDisplay.appendChild(currentInfoProp)
     }
@@ -198,31 +181,34 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
         dateElements.classList.replace("datetime", "date");
     });
 
-    rotateCompass(obj1[0].winddir)
+    rotateCompass(obj1.winddir)
+    /*
     let dayOfWeek = weekdays[d.getDay()]
     let dayOfWeekText = document.createElement("div");
     dayOfWeekText.textContent = dayOfWeek
     currentDisplay.insertBefore(dayOfWeekText, currentDisplay.firstChild)
+    */
     element1.appendChild(currentDisplay)
+    
 
-    let dayConditions = obj1[0].conditions;
+    let dayConditions = obj1.conditions;
     dayConditions = "Rainy"
     dayConditions = dayConditions.replace(/\s+/g, '-').toLowerCase();
     dayConditions = dayConditions.replace("partially", 'partly');
     dayConditions = dayConditions.replace("overcast", 'cloudy');
-    console.log("dayConditions: " + dayConditions);
+    //console.log("dayConditions: " + dayConditions);
 
     let dayConditionsIcons = document.querySelectorAll(".day-icons");
     let found = false;
     dayConditionsIcons.forEach(dayConditionsIcon => {
          const classList = dayConditionsIcon.classList;
-         console.log("classList: " + classList);
+         //console.log("classList: " + classList);
          classList.forEach(className => {
             if (className.includes(dayConditions) && !found) {
-                console.log(found);
+                //console.log(found);
                 found = true;
                 dayConditionsIcon.style.display = "inline-block";
-                console.log(className);
+                //console.log(className);
             }
          });
     });
@@ -244,9 +230,6 @@ function DisplayWeatherDayChart(obj1, obj2, unit, label1, color1, color2) {
         let propHour = 0;
         propHour = currentTime + i;
         allPropsWeatherKeys
-        //let newObj = {y:temperatureFToC(obj1[propHour][unit]), x:propHour}
-        //xyValues.push(newObj)
-        //console.log(xyValues);
         xValues.push(propHour)
         if (unit === "feelslike") {
              yValues.push(temperatureFToC(obj1[propHour][unit]))
@@ -287,19 +270,21 @@ function DisplayWeatherDayChart(obj1, obj2, unit, label1, color1, color2) {
   });
 }
 
-function loadWeather() {
+function loadWeather(daysAdditional) {
     let weekly = document.querySelector('.weather-display-daily')
     let hourly = document.querySelector('.weather-display-hourly')
     let day = document.querySelector('.weather-display-day')
+
+    //Check if not current date
 
     //Clear UI
     weekly.querySelectorAll("[class*='info']").forEach(e => e.remove());
     hourly.querySelectorAll("[class*='info']").forEach(e => e.remove());
     day.querySelectorAll("[class*='info']").forEach(e => e.remove());
-
+    let currentHour = true
     DisplayWeather(daysPropsWeather, daysPropsUsed, weekly)
-    DisplayWeather(hourPropsWeather, hourPropsUsed, hourly)
-    DisplayWeatherDay(daysPropsWeather, dayPropsUsed, day, 0)
+    DisplayWeather(hourPropsWeather, hourPropsUsed, hourly, daysAdditional)
+    DisplayWeatherDay(dayPropsWeather, dayPropsUsed, day, 0)
     loadWeatherDayChart()
     AppendUnits()
 }
@@ -340,6 +325,18 @@ function loadWeatherDayChart(e) {
     }
 
     DisplayWeatherDayChart(hourPropsWeather, hourPropsUsed, newUnit, label1, color1, color2)
+}
+
+function handleDayClicked(e) {
+    console.log("handleDayClicked running");
+    if (e.target.classList[0].includes("weather-display-daily-info-") ) {
+        let daysNum = e.target.classList[0]
+        console.log(daysNum.replace("weather-display-daily-info-", ""));
+        let daysAdditional = daysNum.replace("weather-display-daily-info-", "")
+        console.log(daysAdditional);
+        setWeather(allWeather, daysAdditional)
+        loadWeather(daysAdditional)
+    }
 }
 
 function rotateCompass(winddir) {
