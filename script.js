@@ -1,7 +1,7 @@
 function setPrettyText(input) {
     return input
-      .replace(/([A-Z])/g, ' $1') // Add space before each uppercase letter
-      .replace(/^./, str => str.toUpperCase()) // Capitalize the first letter
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase())
       .trim();
   }
 
@@ -14,16 +14,15 @@ function getCommonKeys(obj1, obj2) {
 let currentTime = "";
 const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const d = new Date();
+let daysAdditional = 0
 
 function temperatureFToC(valNum) {
   valNum = parseFloat(valNum);
-  //console.log("Converting: " + valNum + "to: " + Math.round(((valNum-32) * 5 / 9)  * 10) / 10);
   return Math.round(((valNum-32) * 5 / 9)  * 10) / 10
 }
 
 async function getWeather(location) {
     console.log(`Getting weather, location is: ${location}`);
-    //const display = document.querySelector('#weathertext');
     const apiKey = '?key=9S6PHD9WTMVUYEKHT5KNYKJMR'
     if (!location) {
         console.log(`No location detected, setting default as Carlisle`);
@@ -79,9 +78,7 @@ hourPropsUsed = {
 }
 
 function setWeather(obj, day) {
-    //currentWeather = {};
     allPropsWeather = obj;
-    let keys = Object.keys(obj.currentConditions);
 
     allWeather = obj;
     console.log("all weather" + obj);
@@ -110,7 +107,6 @@ function DisplayWeather(obj1, obj2, element1, daysAdditional) {
         }
         timeUnits = 24 - currentTime
     }
-    //console.log(currentTime)
     const allPropsWeatherKeys = Object.keys(obj2)
     for (let i = 0; i < timeUnits; i++) {
         //Create individual time unit
@@ -157,7 +153,6 @@ function DisplayWeather(obj1, obj2, element1, daysAdditional) {
             }
             currentDisplay.appendChild(currentDisplayProp);
         }
-
         element1.appendChild(currentDisplay)
         attachDragger(element1)
     }
@@ -179,15 +174,11 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
     let dateElements = currentDisplay.querySelectorAll(".datetime");
     dateElements.forEach(dateElements => {
         dateElements.classList.replace("datetime", "date");
+        dateElements.setAttribute("id","day-date");
     });
 
     rotateCompass(obj1.winddir)
-    /*
-    let dayOfWeek = weekdays[d.getDay()]
-    let dayOfWeekText = document.createElement("div");
-    dayOfWeekText.textContent = dayOfWeek
-    currentDisplay.insertBefore(dayOfWeekText, currentDisplay.firstChild)
-    */
+
     element1.appendChild(currentDisplay)
     
 
@@ -196,19 +187,15 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
     dayConditions = dayConditions.replace(/\s+/g, '-').toLowerCase();
     dayConditions = dayConditions.replace("partially", 'partly');
     dayConditions = dayConditions.replace("overcast", 'cloudy');
-    //console.log("dayConditions: " + dayConditions);
 
     let dayConditionsIcons = document.querySelectorAll(".day-icons");
     let found = false;
     dayConditionsIcons.forEach(dayConditionsIcon => {
          const classList = dayConditionsIcon.classList;
-         //console.log("classList: " + classList);
          classList.forEach(className => {
             if (className.includes(dayConditions) && !found) {
-                //console.log(found);
                 found = true;
                 dayConditionsIcon.style.display = "inline-block";
-                //console.log(className);
             }
          });
     });
@@ -216,10 +203,15 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
 
 function DisplayWeatherDayChart(obj1, obj2, unit, label1, color1, color2) {
     console.log(color1 + color2);
-    let xyValues = [];
+    //let xyValues = [];
     let xValues = [];
     let yValues = [];
-    currentTime = d.getHours();
+    console.log(daysAdditional);
+    if (daysAdditional > 0 ) {
+        currentTime = 0;
+    } else {
+        currentTime = d.getHours();
+    }
     timeUnits = 24 - currentTime;
     const allPropsWeatherKeys = Object.keys(obj2)
 
@@ -281,7 +273,7 @@ function loadWeather(daysAdditional) {
     weekly.querySelectorAll("[class*='info']").forEach(e => e.remove());
     hourly.querySelectorAll("[class*='info']").forEach(e => e.remove());
     day.querySelectorAll("[class*='info']").forEach(e => e.remove());
-    let currentHour = true
+
     DisplayWeather(daysPropsWeather, daysPropsUsed, weekly)
     DisplayWeather(hourPropsWeather, hourPropsUsed, hourly, daysAdditional)
     DisplayWeatherDay(dayPropsWeather, dayPropsUsed, day, 0)
@@ -297,17 +289,14 @@ function loadWeatherDayChart(e) {
 
     try {
         if (e.target.classList.value.replace("chart-button-" , "")) {
-            //console.log("changing newUnit");
             newUnit = e.target.classList.value.replace("chart-button-" , "")
         }
     } catch (error) {
-        //console.log(error);
     }
 
     console.log(newUnit);
     switch (newUnit) {
         case "feelslike":
-            //console.log("is feelslike");
             label1 = "Temperature (°C)";
             color1 = "rgba(255, 183, 0, 0.79)";
             color2 = "rgba(238, 255, 0, 1)";
@@ -332,8 +321,9 @@ function handleDayClicked(e) {
     if (e.target.classList[0].includes("weather-display-daily-info-") ) {
         let daysNum = e.target.classList[0]
         console.log(daysNum.replace("weather-display-daily-info-", ""));
-        let daysAdditional = daysNum.replace("weather-display-daily-info-", "")
+        daysAdditional = daysNum.replace("weather-display-daily-info-", "")
         console.log(daysAdditional);
+
         setWeather(allWeather, daysAdditional)
         loadWeather(daysAdditional)
     }
@@ -366,12 +356,11 @@ function attachDragger(element) {
             const diffX = currentX - lastPosition.x;
             const diffY = currentY - lastPosition.y;
 
-            // Reduce the scrolling speed by introducing a scaling factor
-            const scrollSpeed = 0.04; // Adjust this value to control the scrolling speed
+            // Scaling factor
+            const scrollSpeed = 0.04; // Adjust to control scrolling speed
             const scrollX = diffX * scrollSpeed;
             const scrollY = diffY * scrollSpeed;
 
-            // Use requestAnimationFrame for smoother scrolling
             if (animationFrameId === null) {
                 animationFrameId = requestAnimationFrame(() => {
                     element.scrollLeft -= scrollX;
@@ -429,7 +418,6 @@ function AppendUnits() {
     });
     time.forEach(time => {
         time.textContent = time.textContent.substring(0, 5);
-        //console.log(time.textContent.substring(0, 5))
     });
 }
 

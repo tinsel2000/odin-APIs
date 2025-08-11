@@ -20,30 +20,6 @@ body {
 body > * {
   margin-bottom: 10px;
 }
-/* 
-.weather-info {
-  align-items: center;
-  appearance: none;
-  background-color: #FCFCFD;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
-  box-sizing: border-box;
-  cursor: pointer;
-  justify-content: center;
-  line-height: 1.25;
-  list-style: none;
-  overflow: hidden;
-  padding-left: 16px;
-  padding-right: 16px;
-  position: relative;
-  text-decoration: none;
-  transition: box-shadow .15s,transform .15s;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  white-space: nowrap;
-  will-change: box-shadow,transform;
-} */
 
 .weather-display-hourly,
 .weather-display-daily,
@@ -51,6 +27,9 @@ body > * {
     display: flex;
     flex-direction: row;
     margin: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
 }
 
 .weather-display-hourly > *,
@@ -58,28 +37,14 @@ body > * {
 .weather-display-day > * {
   height: 100%;
 }
-
-.weather-display-hourly,
-.weather-display-daily {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-}
-
-/* .weather-display-day > * {
-  padding: 10px;
-} */
-
+/*
 .weather-display-hourly-labels,
-.weather-display-daily-labels,
-.weather-display-day-labels {
-    text-align: right;
+.weather-display-day-labels,
+.weather-display-weekly-labels {
+  max-width: 100%;
+  min-width: 0%;
 }
-
-/* #hourly-conditions {
-  min-height: 3em;
-} */
-
+*/
 div[class*="info"] > *,
 div[class*="labels"] > * {
   white-space: nowrap;
@@ -87,13 +52,20 @@ div[class*="labels"] > * {
 }
 
 div[class*="info"] > .conditions,
-div[class*="labels"] > #hourly-conditions {
+div[class*="labels"] > #hourly-conditions,
+div[class*="labels"] > #weekly-conditions {
   min-height: 3em;
   white-space: normal;
 }
 
+div[class*="info"] > * {
+  max-width: 110px;
+  min-width: 80px;
+}
+
 div[class*="labels"] {
   background-color: aliceblue;
+  text-align: right;
 }
 
 /*
