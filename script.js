@@ -37,10 +37,7 @@ async function getWeather(location) {
     const returnedData = await response.json();
     console.log(returnedData);
     setWeather(returnedData);
-    DisplayWeather(daysPropsWeather, daysPropsUsed, document.querySelector('.weather-display-daily'))
-    DisplayWeather(hourPropsWeather, hourPropsUsed, document.querySelector('.weather-display-hourly'))
-    DisplayWeatherDay(daysPropsWeather, dayPropsUsed, document.querySelector('.weather-display-day'), 0)
-    AppendUnits()
+    loadWeather()
 }
 
 currentWeather = {};
@@ -130,9 +127,10 @@ function DisplayWeather(obj1, obj2, element1) {
     //console.log(currentTime)
     const allPropsWeatherKeys = Object.keys(obj2)
     for (let i = 0; i < timeUnits; i++) {
-        //Create individual day
+        //Create individual time unit
         let currentDisplay = document.createElement("div");
         let propTime = i
+        //For daily consideration
         dayOfWeekNum = currentTime + i
         if (dayOfWeekNum > 6 && dayOfWeekNum < 14 ) {
             dayOfWeekNum -= 7
@@ -228,6 +226,120 @@ function DisplayWeatherDay(obj1, obj2, element1, dayOfWeekNum) {
             }
          });
     });
+}
+
+function DisplayWeatherDayChart(obj1, obj2, unit, label1, color1, color2) {
+    console.log(color1 + color2);
+    let xyValues = [];
+    let xValues = [];
+    let yValues = [];
+    currentTime = d.getHours();
+    timeUnits = 24 - currentTime;
+    const allPropsWeatherKeys = Object.keys(obj2)
+
+    for (let i = 0; i < timeUnits; i++) {
+        
+        //Create individual time unit
+        let propTime = i
+        let propHour = 0;
+        propHour = currentTime + i;
+        allPropsWeatherKeys
+        //let newObj = {y:temperatureFToC(obj1[propHour][unit]), x:propHour}
+        //xyValues.push(newObj)
+        //console.log(xyValues);
+        xValues.push(propHour)
+        if (unit === "feelslike") {
+             yValues.push(temperatureFToC(obj1[propHour][unit]))
+        } else {
+             yValues.push(obj1[propHour][unit])
+        }
+       
+
+    }
+    const chart = document.querySelector('#weather-display-day-chart');
+
+    new Chart(chart, {
+    type: 'line',
+    data: {
+    labels: xValues,
+      datasets: [{
+        backgroundColor: color1,
+        borderColor: color2,
+        label: label1,
+        data: yValues,
+        borderWidth: 3
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          stacked: true,
+          min: 0,
+          beginAtZero: true,
+          ticks: {
+            callback: function(value, index, ticks) {
+                return '$' + value;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+function loadWeather() {
+    let weekly = document.querySelector('.weather-display-daily')
+    let hourly = document.querySelector('.weather-display-hourly')
+    let day = document.querySelector('.weather-display-day')
+
+    //Clear UI
+    weekly.querySelectorAll("[class*='info']").forEach(e => e.remove());
+    hourly.querySelectorAll("[class*='info']").forEach(e => e.remove());
+    day.querySelectorAll("[class*='info']").forEach(e => e.remove());
+
+    DisplayWeather(daysPropsWeather, daysPropsUsed, weekly)
+    DisplayWeather(hourPropsWeather, hourPropsUsed, hourly)
+    DisplayWeatherDay(daysPropsWeather, dayPropsUsed, day, 0)
+    loadWeatherDayChart()
+    AppendUnits()
+}
+
+function loadWeatherDayChart(e) {
+    let newUnit = "feelslike";
+    let color1 = "";
+    let color2 = "";
+    let label1 = "";
+
+    try {
+        if (e.target.classList.value.replace("chart-button-" , "")) {
+            //console.log("changing newUnit");
+            newUnit = e.target.classList.value.replace("chart-button-" , "")
+        }
+    } catch (error) {
+        //console.log(error);
+    }
+
+    console.log(newUnit);
+    switch (newUnit) {
+        case "feelslike":
+            //console.log("is feelslike");
+            label1 = "Temperature (°C)";
+            color1 = "rgba(255, 183, 0, 0.79)";
+            color2 = "rgba(238, 255, 0, 1)";
+            break;
+        case "precip":
+            label1 = "Rainfall (mm)";
+            color1 = "rgba(0, 8, 255, 0.63)";
+            color2 = "rgba(0, 242, 255, 0.75)";
+            break;
+        case "humidity":
+            label1 = "Humidity (%)";
+            color1 = "rgba(152, 213, 253, 0.63)";
+            color2 = "rgba(0, 239, 252, 0.75))";
+            break;
+    }
+
+    DisplayWeatherDayChart(hourPropsWeather, hourPropsUsed, newUnit, label1, color1, color2)
 }
 
 function rotateCompass(winddir) {

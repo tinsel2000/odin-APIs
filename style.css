@@ -8,15 +8,18 @@
 * {
   font-family: -apple-system,sans-serif;
   font-weight: 700;
-  letter-spacing: -.24px;
+  /* letter-spacing: -.24px; */
+  line-height:1em;
 }
 
 body {
   background-color: rgba(238, 238, 238, 0.87);
 }
 
-
-
+body > * {
+  margin-bottom: 10px;
+}
+/* 
 .weather-info {
   align-items: center;
   appearance: none;
@@ -39,7 +42,7 @@ body {
   touch-action: manipulation;
   white-space: nowrap;
   will-change: box-shadow,transform;
-}
+} */
 
 .weather-display-hourly,
 .weather-display-daily,
@@ -49,18 +52,22 @@ body {
     margin: 10px;
 }
 
+.weather-display-hourly > *,
+.weather-display-daily > *,
+.weather-display-day > * {
+  height: 100%;
+}
+
 .weather-display-hourly,
 .weather-display-daily {
     overflow-x: auto;
+    overflow-y: hidden;
     scrollbar-width: none;
 }
 
-.weather-display-day > * {
+/* .weather-display-day > * {
   padding: 10px;
-}
-
-
-
+} */
 
 .weather-display-hourly-labels,
 .weather-display-daily-labels,
@@ -68,18 +75,20 @@ body {
     text-align: right;
 }
 
-#hourly-conditions {
-  min-height: 2em;
-}
+/* #hourly-conditions {
+  min-height: 3em;
+} */
 
 div[class*="info"] > *,
 div[class*="labels"] > * {
   white-space: nowrap;
-  padding-bottom: 5px;
+  padding: 4px;
 }
 
-div[class*="info"] > .conditions {
-  min-height: 2em;
+div[class*="info"] > .conditions,
+div[class*="labels"] > #hourly-conditions {
+  min-height: 3em;
+  white-space: normal;
 }
 
 div[class*="labels"] {
@@ -104,7 +113,7 @@ div[class*="labels"] {
   font-family: -apple-system,sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
-  letter-spacing: -.24px;
+  /* letter-spacing: -.24px; */
   margin: 0;
   outline: none;
   padding: 1rem 1rem;
@@ -116,11 +125,11 @@ div[class*="labels"] {
   touch-action: manipulation;
 }
 
-.button-73:hover {
+/* .button-73:hover {
   background-color: #FFC229;
   box-shadow: #FF6314 0 -6px 8px inset;
   transform: scale(1.01);
-}
+} */
 
 .button-73:active {
   transform: scale(1.025);
@@ -137,7 +146,7 @@ div[class*="labels"] {
     /* This wrapper allows you to easily size and position the entire compass */
     width: 150px;
     height: 150px;
-    margin: 10px 10px;
+    padding: 10px;
 }
 
 .compass-container {
@@ -153,7 +162,7 @@ div[class*="labels"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .compass-center-dot {
@@ -215,6 +224,11 @@ div[class*="labels"] {
 .compass-markings .east { top: 50%; right: 15%; transform: translate(50%, -50%); }
 .compass-markings .west { top: 50%; left: 15%; }
 
+.icon-area {
+  display: flex;
+  flex-direction: row;
+}
+
 /* Keyframe animation for rotation */
 @keyframes rotateNeedle {
     from { transform: translate(-50%, -50%) rotate(0deg); }
@@ -226,17 +240,12 @@ div[class*="labels"] {
 }
 
 @media (min-width: 800px) {
-  .weather-display-day-winddir {
+
+  /* .compass-component-wrapper {
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    flex: 1 1;
-  }
-  .compass-component-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-start;
-  }
+  } */
   .weather-display-day-container {
     display: flex;
     flex-direction: row;
@@ -249,26 +258,14 @@ div[class*="labels"] {
   }
 }
 @media (max-width: 800px) {
-  .compass-component-wrapper {
-  }
-  .weather-display-day-container {
-    
-  }
-  .weather-display-day-container > * {
-    display: inline-block;
-  }
   .icon-area {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
   }
-  .weather-display-day {
-    width: 100%;
-    justify-content: center;
-  }
 }
 
 .day-icons {
-  font-size: 10rem;
+  font-size: 150px;
   display: none;
 }

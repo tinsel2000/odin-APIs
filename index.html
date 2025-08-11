@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
     <script src="script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
+    <form id="weathersearch">
+        <label for="location"><b>Search Location</b></label>
+        <input name="location" type="text">
+        <button type="submit">Search</button>
+    </form>
     <div id="weather-display-day-header">
         Todays Summary:
     </div>
@@ -51,15 +57,23 @@
                 <div id="hourly-temp">UV Index:</div>
             </div>
         </div>
+        <div class="weather-display-day-chart-container">
+            <button class="chart-button-feelslike" onclick="loadWeatherDayChart(event)">Temp</button>
+            <button class="chart-button-precip" onclick="loadWeatherDayChart(event)">Rain</button>
+            <button class="chart-button-humidity" onclick="loadWeatherDayChart(event)">Humidity</button>
+            <canvas id="weather-display-day-chart" style="width:100%;max-width:700px"></canvas>
+        </div>
         <div class="icon-area">
-            <div class="weather-display-day-icons">
-                <span class="day-icons mdi mdi-weather-cloudy"></span>
-                <span class="day-icons mdi mdi-weather-partly-cloudy"></span>
-                <span class="day-icons mdi mdi-weather-pouring"></span>
-                <span class="day-icons mdi mdi-weather-rainy"></span>
-                <span class="day-icons mdi mdi-weather-partly-rainy"></span>
-                <span class="day-icons mdi mdi-weather-sunny"></span>
-                <span class="day-icons mdi mdi-weather-windy"></span>
+            <div class="weather-display-day-icons">Conditions: 
+                <div class="weather-display-day-icon">
+                    <span class="day-icons mdi mdi-weather-cloudy"></span>
+                    <span class="day-icons mdi mdi-weather-partly-cloudy"></span>
+                    <span class="day-icons mdi mdi-weather-pouring"></span>
+                    <span class="day-icons mdi mdi-weather-rainy"></span>
+                    <span class="day-icons mdi mdi-weather-partly-rainy"></span>
+                    <span class="day-icons mdi mdi-weather-sunny"></span>
+                    <span class="day-icons mdi mdi-weather-windy"></span>
+                </div>
             </div>
             <div class="weather-display-day-winddir">Wind Direction today:
                 <div class="compass-component-wrapper">
@@ -123,10 +137,5 @@
             <div id="hourly-precip-percent">Rain Chance:</div>
         </div>
     </div>
-    <form id="weathersearch">
-        <label for="location"><b>Search Location</b></label>
-        <input name="location" type="text">
-        <button type="submit">Search</button>
-    </form>
 </body>
 </html>
